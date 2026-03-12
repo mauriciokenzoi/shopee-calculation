@@ -22,21 +22,17 @@ function salvarConfig(){
 
     function calcular(){
 
-    let venda = parseFloat(document.getElementById("valorVenda").value)
-    let custo = parseFloat(document.getElementById("custoProduto").value)
+    let venda = parseFloat(document.getElementById("valorVenda").value) || 0
+    let custo = parseFloat(document.getElementById("custoProduto").value) || 0
 
-    let taxa = parseFloat(document.getElementById("taxaImposto").value)
-    let fixa = parseFloat(document.getElementById("taxaFixa").value)
-
-    if(!venda || !custo){
-    return
-    }
+    let taxa = parseFloat(document.getElementById("taxaImposto").value) || 0
+    let fixa = parseFloat(document.getElementById("taxaFixa").value) || 0
 
     let imposto = venda * (taxa/100)
 
     let lucro = venda - imposto - fixa - custo
 
-    let percentual = (lucro / custo) * 100
+    let percentual = custo > 0 ? (lucro / custo) * 100 : 0
 
     let resultado = document.getElementById("resultado")
 
@@ -99,4 +95,9 @@ function salvarConfig(){
 
     carregarConfig()
     carregarParametros()
-}
+
+    // recalcular automaticamente ao digitar
+    document.getElementById("valorVenda").addEventListener("input", calcular)
+    document.getElementById("custoProduto").addEventListener("input", calcular)
+    document.getElementById("taxaImposto").addEventListener("input", calcular)
+    document.getElementById("taxaFixa").addEventListener("input", calcular)
